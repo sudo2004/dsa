@@ -1,0 +1,221 @@
+//Assignment 1 (b) 
+#include <iostream> 
+#include <cstring> // for strcmp 
+using namespace std; 
+struct Student { 
+    int id; 
+    char name[50]; 
+    float cgpa; 
+}; 
+void addStudent(Student*& students, int& count) { 
+    // Increase size (like realloc) 
+    Student* temp = new Student[count + 1]; 
+    // Copy old data 
+    for (int i = 0; i < count; i++) { 
+        temp[i] = students[i]; 
+    } 
+    // Add new student 
+    cout << "Enter Student ID: "; 
+    cin >> temp[count].id; 
+    cout << "Enter Student Name: "; 
+    cin.ignore(); 
+    cin.getline(temp[count].name, 50); 
+    cout << "Enter CGPA: "; 
+    cin >> temp[count].cgpa; 
+    // Free old memory and update pointer 
+    delete[] students; 
+    students = temp; 
+    count++; 
+} 
+void displayStudents(Student* students, int count) { 
+    cout << "\n--- Student List ---\n"; 
+    for (int i = 0; i < count; i++) { 
+        cout << "ID: " << students[i].id 
+             << ", Name: " << students[i].name 
+             << ", CGPA: " << students[i].cgpa << endl; 
+    } 
+} 
+// Bubble Sort by Name (Alphabetical) 
+void bubbleSortByName(Student* students, int count) { 
+    for (int i = 0; i < count - 1; i++) { 
+        for (int j = 0; j < count - i - 1; j++) { 
+            if (strcmp(students[j].name, students[j + 1].name) > 0) { 
+                swap(students[j], students[j + 1]); 
+            } 
+        } 
+    } 
+} 
+// Selection Sort by CGPA 
+void selectionSortByCGPA(Student* students, int count, bool ascending) { 
+    for (int i = 0; i < count - 1; i++) { 
+        int idx = i; 
+        for (int j = i + 1; j < count; j++) { 
+            if (ascending) { 
+                if (students[j].cgpa < students[idx].cgpa) 
+                    idx = j; 
+            } else { 
+                if (students[j].cgpa > students[idx].cgpa) 
+                    idx = j; 
+            } 
+        } 
+        swap(students[i], students[idx]); 
+    } 
+} 
+int main() { 
+    Student* students = nullptr; 
+    int count = 0; 
+    int choice; 
+    do { 
+        cout << "\n=== Student Database Menu ===\n"; 
+        cout << "1. Add Student\n"; 
+        cout << "2. Display Students\n"; 
+        cout << "3. Sort by Name (Bubble Sort)\n"; 
+        cout << "4. Sort by CGPA Ascending (Selection Sort)\n"; 
+        cout << "5. Sort by CGPA Descending (Selection Sort)\n"; 
+        cout << "6. Exit\n"; 
+        cout << "Enter your choice: "; 
+        cin >> choice; 
+ 
+        switch (choice) { 
+        case 1: 
+            addStudent(students, count); 
+            break; 
+        case 2: 
+            displayStudents(students, count); 
+            break; 
+        case 3: 
+            bubbleSortByName(students, count); 
+            cout << "Sorted by Name.\n"; 
+            break; 
+        case 4: 
+            selectionSortByCGPA(students, count, true); 
+            cout << "Sorted by CGPA (Ascending).\n"; 
+            break; 
+        case 5: 
+            selectionSortByCGPA(students, count, false); 
+            cout << "Sorted by CGPA (Descending).\n"; 
+            break; 
+        case 6: 
+            cout << "Exiting...\n"; 
+            break; 
+        default: 
+            cout << "Invalid choice!\n"; 
+        } 
+    } while (choice != 6); 
+ 
+    delete[] students; // Free memory 
+    return 0; 
+} 
+//OUTPUT 
+=== Student Database Menu === 
+1. Add Student 
+2. Display Students 
+3. Sort by Name (Bubble Sort) 
+4. Sort by CGPA Ascending (Selection Sort) 
+5. Sort by CGPA Descending (Selection Sort) 
+6. Exit 
+Enter your choice: 1 
+Enter Student ID: 77 
+Enter Student Name: Deepak 
+Enter CGPA: 9.6 
+=== Student Database Menu === 
+1. Add Student 
+2. Display Students 
+3. Sort by Name (Bubble Sort) 
+4. Sort by CGPA Ascending (Selection Sort) 
+5. Sort by CGPA Descending (Selection Sort) 
+6. Exit 
+Enter your choice: 1 
+Enter Student ID: 14 
+Enter Student Name: Vipul 
+Enter CGPA: 8.6 
+=== Student Database Menu === 
+1. Add Student 
+2. Display Students 
+3. Sort by Name (Bubble Sort) 
+4. Sort by CGPA Ascending (Selection Sort) 
+5. Sort by CGPA Descending (Selection Sort) 
+6. Exit 
+Enter your choice: 1 
+Enter Student ID: 12 
+Enter Student Name: Sachin 
+Enter CGPA: 8.8 
+=== Student Database Menu === 
+1. Add Student 
+2. Display Students 
+3. Sort by Name (Bubble Sort) 
+4. Sort by CGPA Ascending (Selection Sort) 
+5. Sort by CGPA Descending (Selection Sort) 
+6. Exit 
+Enter your choice: 2 --- Student List --- 
+ID: 77, Name: Deepak, CGPA: 9.6 
+ID: 14, Name: Vipul, CGPA: 8.6 
+ID: 12, Name: Sachin, CGPA: 8.8 
+=== Student Database Menu === 
+1. Add Student 
+2. Display Students 
+3. Sort by Name (Bubble Sort) 
+4. Sort by CGPA Ascending (Selection Sort) 
+5. Sort by CGPA Descending (Selection Sort) 
+6. Exit 
+Enter your choice: 3 
+Sorted by Name. 
+=== Student Database Menu === 
+1. Add Student 
+2. Display Students 
+3. Sort by Name (Bubble Sort) 
+4. Sort by CGPA Ascending (Selection Sort) 
+5. Sort by CGPA Descending (Selection Sort) 
+6. Exit 
+Enter your choice: 2 --- Student List --- 
+ID: 77, Name: Deepak, CGPA: 9.6 
+ID: 12, Name: Sachin, CGPA: 8.8 
+ID: 14, Name: Vipul, CGPA: 8.6 
+=== Student Database Menu === 
+1. Add Student 
+2. Display Students 
+3. Sort by Name (Bubble Sort) 
+4. Sort by CGPA Ascending (Selection Sort) 
+5. Sort by CGPA Descending (Selection Sort) 
+6. Exit 
+Enter your choice: 4 
+Sorted by CGPA (Ascending). 
+=== Student Database Menu === 
+1. Add Student 
+2. Display Students 
+3. Sort by Name (Bubble Sort) 
+4. Sort by CGPA Ascending (Selection Sort) 
+5. Sort by CGPA Descending (Selection Sort) 
+6. Exit 
+Enter your choice: 2 --- Student List --- 
+ID: 14, Name: Vipul, CGPA: 8.6 
+ID: 12, Name: Sachin, CGPA: 8.8 
+ID: 77, Name: Deepak, CGPA: 9.6 
+=== Student Database Menu === 
+1. Add Student 
+2. Display Students 
+3. Sort by Name (Bubble Sort) 
+4. Sort by CGPA Ascending (Selection Sort) 
+5. Sort by CGPA Descending (Selection Sort) 
+6. Exit 
+Enter your choice: 5 
+Sorted by CGPA (Descending). 
+=== Student Database Menu === 
+1. Add Student 
+2. Display Students 
+3. Sort by Name (Bubble Sort) 
+4. Sort by CGPA Ascending (Selection Sort) 
+5. Sort by CGPA Descending (Selection Sort) 
+6. Exit 
+Enter your choice: 2 --- Student List --- 
+ID: 77, Name: Deepak, CGPA: 9.6 
+ID: 12, Name: Sachin, CGPA: 8.8 
+ID: 14, Name: Vipul, CGPA: 8.6 
+=== Student Database Menu === 
+1. Add Student 
+2. Display Students 
+3. Sort by Name (Bubble Sort) 
+4. Sort by CGPA Ascending (Selection Sort) 
+5. Sort by CGPA Descending (Selection Sort) 
+6. Exit 
+Enter your choice: 5 
